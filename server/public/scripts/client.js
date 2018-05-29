@@ -16,22 +16,20 @@ function readyNow(){
   $( '#clearButton' ).on( 'click', clear );
   $( '#equalsButton' ).on( 'click', equals );
   $( '.operatorButton' ).on( 'click', operator );
-  $( '.numberButton' ).on( 'click', number );
   getHistory();
 } //end readyNow
 
 function clear(){
   console.log( 'in clear' );
-  x='';
-  y='';
+  $( '#num0In' ).val( '' );
+  $( '#num1In' ).val( '' );
   selectedOperator='';
-  updateInput();
 }
 
 function equals(){
   console.log( 'in equals' );
   // get user inputs for number combine with selected operator create new Calculation
-  let calcToSend = new Calculation( x, y, selectedOperator );
+  let calcToSend = new Calculation( $( '#num0In' ).val(), $( '#num1In' ).val(), selectedOperator );
   console.log( 'sending:', calcToSend );
   // send to server via post
   $.ajax({
@@ -66,24 +64,8 @@ function getHistory(){
   }) // end ajax
 }
 
-function number(){
-  console.log( 'number:', $( this ).text() );
-  if( selectedOperator === '' ){
-    x += $( this ).text();
-  } //end x
-  else{
-    y += $( this ).text();
-  }
-  updateInput();
-} //end funk
-
 function operator(){
   console.log( 'in operator:', $( this ).text() );
   selectedOperator = $( this ).text();
   console.log( 'selected operator:', selectedOperator );
-  updateInput();
-}
-
-function updateInput(){
-  $( '#numberOut' ).val( x + selectedOperator + y );
 }
